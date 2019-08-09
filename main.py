@@ -37,7 +37,7 @@ Map = 0
 
 def screen_draw(win2):
     win2.blit(background[Map], [0, 0])
-    #player3.draw(win2)
+    player3.draw(win2)
     player2.draw(win2)
     player.draw(win2)
     pygame.display.update()
@@ -52,7 +52,7 @@ player = n.getP()
 while run2:
 
     clock.tick(30)
-    #player3 = n.send(player)
+    player3 = n.send(player)
     player2 = n.send(player)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

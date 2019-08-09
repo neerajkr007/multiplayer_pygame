@@ -13,16 +13,16 @@ try:
 except socket.error as e:
     str(e)
 
-s.listen(2)
+s.listen(3)
 print("Waiting for a connection, Server Started")
 
-players = [Player(150, 300, (0, 0, 0)), Player(850, 300, (255, 0, 0))]#, Player(500, 300, (255, 255, 255))]
+players = [Player(150, 300, (0, 0, 0)), Player(850, 300, (255, 0, 0)), Player(500, 300, (255, 255, 255))]
 
 
 def threaded_client(conn, player):
     conn.send(pickle.dumps(players[player]))
-    reply = ""
-    #reply2 = ""
+    reply1 = ""
+    reply2 = ""
     while True:
         try:
             data = pickle.loads((conn.recv(2048)))
@@ -33,16 +33,21 @@ def threaded_client(conn, player):
                 break
             else:
                 if player == 1:
-                    reply = players[0]
-                #elif player == 2:
-                 #   reply = players[1]
+                    reply1 = players[0]
+                    reply2 = players[2]
+                elif player == 2:
+                    reply1 = players[1]
+                    reply2 = players[0]
                 else:
-                    reply = players[1]
+                    reply1 = players[1]
+                    reply2 = players[2]
 
                 print("Received: ", data)
-                print("Sending : ", reply)
+                print("Sending : ", reply1)
+                print("Sending : ", reply2)
 
-            conn.sendall(pickle.dumps(reply))
+            conn.sendall(pickle.dumps(reply1))
+            conn.sendall(pickle.dumps(reply2))
         except:
             break
 
