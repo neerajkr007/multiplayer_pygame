@@ -1,8 +1,9 @@
 import socket
 from _thread import *
-import sys
+from player import Player
+import pickle
 
-server = "192.168.0.102"
+server = "25.81.81.215"
 port = 5555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -12,42 +13,36 @@ try:
 except socket.error as e:
     str(e)
 
-s.listen(1)
+s.listen(2)
 print("Waiting for a connection, Server Started")
 
-def read_pos(str):
-    str = str.split(",")
-    return int(str[0]), int(str[1])
-
-
-def make_pos(tup):
-    return str(tup[0]) + "," + str(tup[1])
-
-
-pos = [(0,0),(350,300)]
+players = [Player(150, 300, (0, 0, 0)), Player(850, 300, (255, 0, 0))]#, Player(500, 300, (255, 255, 255))]
 
 
 def threaded_client(conn, player):
-    conn.send(str.encode(make_pos(pos[player])))
+    conn.send(pickle.dumps(players[player]))
     reply = ""
+    #reply2 = ""
     while True:
         try:
-            data = read_pos(conn.recv(2048).decode())
-            pos[player] = data
+            data = pickle.loads((conn.recv(2048)))
+            players[player] = data
 
             if not data:
                 print("Disconnected.")
                 break
             else:
                 if player == 1:
-                    reply = pos[0]
+                    reply = players[0]
+                #elif player == 2:
+                 #   reply = players[1]
                 else:
-                    reply = pos[1]
+                    reply = players[1]
 
                 print("Received: ", data)
                 print("Sending : ", reply)
 
-            conn.sendall(str.encode(make_pos(reply)))
+            conn.sendall(pickle.dumps(reply))
         except:
             break
 
@@ -55,12 +50,6 @@ def threaded_client(conn, player):
     conn.close()
 
 
-'''
-inp = input("press y/n to restart server")
-if inp == 'y' or inp == 'Y':
-    run = True
-elif inp == 'n' or inp == 'N':
-    run = False'''
 currentPlayer = 0
 
 while True:
