@@ -2,24 +2,25 @@ import pygame
 from network import Network
 from player import Player
 import os
+
 x = 220
 y = 100
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x, y)
 
-pygame.init()
+'''pygame.init()
 
-win = pygame.display.set_mode((200, 200))
+win = pygame.display.set_mode((400, 400))
 pygame.display.set_caption("Launcher")
 
 run = True
+
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
 pygame.quit()
-
-
+'''
 pygame.init()
 SH = 600
 SW = 950
@@ -37,7 +38,6 @@ Map = 0
 
 def screen_draw(win2):
     win2.blit(background[Map], [0, 0])
-    #player3.draw(win2)
     player2.draw(win2)
     player.draw(win2)
     pygame.display.update()
@@ -48,11 +48,9 @@ clock = pygame.time.Clock()
 run2 = True
 n = Network()
 
+
 player = n.getP()
 while run2:
-
-    clock.tick(30)
-    #player3 = n.send(player)
     player2 = n.send(player)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -60,6 +58,6 @@ while run2:
 
     player.move()
     screen_draw(win2)
+    clock.tick(30)
 
 pygame.quit()
-
