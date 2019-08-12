@@ -70,6 +70,7 @@ class Player(object):
         elif self.facing == 'right' and self.melee:
             win2.blit(meleeR[self.melee_count // 3], (self.x - 20, self.y - 10))
             self.melee_count += 1
+
         else:
             if self.facing == 'right':
                 win2.blit(standing[0], [self.x - 20, self.y - 10])
