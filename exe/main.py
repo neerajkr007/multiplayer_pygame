@@ -24,6 +24,7 @@ pygame.quit()
 pygame.init()
 SH = 600
 SW = 950
+font = pygame.font.SysFont('images/Roboto-Black.ttf', 25)
 
 win2 = pygame.display.set_mode((SW, SH))
 pygame.display.set_caption("testing")
@@ -41,6 +42,9 @@ player = n.getP()
 
 def screen_draw(win2):
     win2.blit(background[Map], [0, 0])
+    pygame.draw.line(win2, (0, 0, 0), (0, 130), (SW, 130), 2)
+    pygame.draw.line(win2, (0, 0, 0), (SW / 2, 0), (SW / 2, 130), 3)
+    win2.blit((font.render('Player Name : ', False, (0, 0, 0))), [10, 30])
     player.move(win2)
     if player2.melee:
         player2.do_melee(win2)
@@ -50,46 +54,36 @@ def screen_draw(win2):
         player.do_melee(win2)
     else:
         player.draw(win2)
-    '''if player2.is_right:
-        win2.blit(standing[0], [player2.x - 20, player2.y - 10])
-    else:
-        win2.blit(standing[1], [player2.x - 20, player2.y - 10])
-    player.draw(win2)
-    if player.is_right:
-        win2.blit(standing[0], [player.x - 20, player.y - 10])
-    else:
-        win2.blit(standing[1], [player.x - 20, player.y - 10])
-'''
-    '''player.draw(win2)
-    if player.walk_count + 1 >= 24:
-        player.walk_count = 0
-        # pygame.draw.rect(win, (0, 100, 0), (player.x, player.y, player. width, player.height))
-    if player.is_left:
-        win2.blit(runL[player.walk_count // 4], [player.x - 20, player.y - 10])
-        player.walk_count += 1
-    elif player.is_right:
-        win2.blit(runR[player.walk_count // 4], [player.x - 20, player.y - 10])
-        player.walk_count += 1
-    else:
-        if player2.is_right:
-            win2.blit(standing[0], [player2.x - 20, player2.y - 10])
-        else:
-            win2.blit(standing[1], [player2.x - 20, player2.y - 10])
-        if player.is_right:
-            win2.blit(standing[0], [player.x - 20, player.y - 10])
-        else:
-            win2.blit(standing[1], [player.x - 20, player.y - 10])
-    '''
+    # print(player.x, player2.x)
     pygame.display.update()
 
-#def collision(player01, player02):
- #   if player01.melee:
-  #      if player01.x +
+
+def collision(player01, player02):
+    if player01.melee:
+        if player01.facing == 'right':
+            for i in range(38):
+                if player01.x + 45 == (player02.x + i):
+                    return True
+        if player01.facing == 'left':
+            for i in range(48):
+                if player01.x - 15 == ((player02.x + 38) - i):
+                    return True
+    elif player02.melee:
+        if player02.facing == 'left':
+            for i in range(38):
+                if player01.x + 45 == (player02.x + i):
+                    return True
+        if player02.facing == 'right':
+            for i in range(48):
+                if player01.x - 15 == ((player02.x + 38) - i):
+                    return True
+    else:
+        return False
+
 
 clock = pygame.time.Clock()
 
 run2 = True
-
 
 while run2:
     clock.tick(24)
@@ -97,6 +91,6 @@ while run2:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run2 = False
-
+    collision(player, player2)
     screen_draw(win2)
 pygame.quit()
