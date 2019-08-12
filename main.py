@@ -41,9 +41,15 @@ player = n.getP()
 
 def screen_draw(win2):
     win2.blit(background[Map], [0, 0])
-    player2.draw(win2)
-    player.draw(win2)
-    player.move()
+    player.move(win2)
+    if player2.melee:
+        player2.do_melee(win2)
+    else:
+        player2.draw(win2)
+    if player.melee:
+        player.do_melee(win2)
+    else:
+        player.draw(win2)
     '''if player2.is_right:
         win2.blit(standing[0], [player2.x - 20, player2.y - 10])
     else:
@@ -76,6 +82,9 @@ def screen_draw(win2):
     '''
     pygame.display.update()
 
+#def collision(player01, player02):
+ #   if player01.melee:
+  #      if player01.x +
 
 clock = pygame.time.Clock()
 
