@@ -21,7 +21,7 @@ except socket.error as e:
 s.listen(2)
 print("Waiting for a connection, Server Started")
 
-players = [Player(950, 300, (0, 0, 0), 'right'), Player(850, 300, (255, 0, 0), 'left')]  # , Player(500, 300, (255, 255, 255))]
+players = [Player(150, 300, (0, 0, 0), 'right'), Player(850, 300, (255, 0, 0), 'left')]  # , Player(500, 300, (255, 255, 255))]
 
 
 def threaded_client(conn, player):
