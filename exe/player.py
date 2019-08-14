@@ -39,7 +39,7 @@ class Player(object):
         self.y = y
         self.ys = y
         self.color = color
-        self.velocity = 10
+        self.velocity = 5
         self.height = 60
         self.width = 38
         self.walk_count = 0
@@ -51,7 +51,7 @@ class Player(object):
         self.melee = False
         self.is_dying = False
         self.is_dead = False
-        self.revive = 3
+        self.revive = 1
 
     def draw(self, win2, x):
         if self.walk_count + 1 >= 24:
@@ -93,7 +93,7 @@ class Player(object):
                 win2.blit(standing[1], [self.x - 20, self.y - 10])
 
     def do_death(self, win2):
-        if self.death_count + 1 >= 29:
+        if self.death_count + 1 >= 28:
             self.death_count = 0
             self.is_dying = False
             self.revive -= 1

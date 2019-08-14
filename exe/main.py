@@ -25,7 +25,7 @@ pygame.quit()
 pygame.init()
 SH = 600
 SW = 950
-font = pygame.font.SysFont('images/Roboto-Black.ttf', 30)
+font = pygame.font.Font('images/Roboto-Black.ttf', 30)
 win2 = pygame.display.set_mode((SW, SH))
 pygame.display.set_caption("testing")
 """                                            IMAGES LOAD    START                                                     """
@@ -58,7 +58,6 @@ def screen_draw(win2):
         player2.do_death(win2)
     elif player2.is_dead:
         player2.draw(win2, player2.x)
-        # time.sleep(2)
     else:
         player2.draw(win2, player2.x)
     if player.melee:
@@ -67,7 +66,6 @@ def screen_draw(win2):
         player.do_death(win2)
     elif player.is_dead:
         player.draw(win2, player.x)
-        # time.sleep(2)
     else:
         player.draw(win2, player.x)
     pygame.display.update()
