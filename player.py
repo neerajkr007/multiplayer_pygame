@@ -1,4 +1,5 @@
 import pygame
+from bullet import Bullet
 
 pygame.display.init()
 """                                            IMAGES LOAD    START                                                     """
@@ -46,12 +47,18 @@ class Player(object):
         self.melee_count = 0
         self.death_count = 0
         self.facing = facing
+        self.facings = facing
         self.is_right = False
         self.is_left = False
         self.melee = False
         self.is_dying = False
         self.is_dead = False
         self.revive = 1
+        self.name = ""
+        self.score = 0
+        self.shoot = False
+        self.firetime = 0
+        self.bullets = []
 
     def draw(self, win2, x):
         if self.walk_count + 1 >= 24:
@@ -97,9 +104,10 @@ class Player(object):
             self.death_count = 0
             self.is_dying = False
             self.revive -= 1
+            self.score += 1
             if self.revive > 0:
                 self.is_dead = False
-                print('yo')
+
         win2.blit(dead[self.death_count // 3], (self.x - 20, self.y - 10))
         self.death_count += 1
 
@@ -111,7 +119,18 @@ class Player(object):
 
     def move(self, win2):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w] and self.y >= 150:
+        if self.firetime > 0:
+            self.firetime += 1
+        if self.firetime >= 15:
+            self.firetime = 0
+        if keys[pygame.K_SPACE] and self.firetime == 0:
+            if len(self.bullets) < 3:
+                if self.facings == 'right':
+                    self.bullets.append(Bullet(round(self.x + (self.width // 2)), round(self.y + 15)))
+                else:
+                    self.bullets.append(Bullet(round(self.x - (self.width // 2)), round(self.y + 15)))
+            self.firetime = 1
+        elif keys[pygame.K_w] and self.y >= 150:
             self.y -= self.velocity
             if self.facing == 'right':
                 self.is_right = True
@@ -137,8 +156,25 @@ class Player(object):
             self.x -= self.velocity
             self.is_left = True
             self.is_right = False
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_v]:
             self.melee = True
         else:
             self.is_left = False
             self.is_right = False
+
+    def do_shoot(self):
+        for bullet in self.bullets:
+            if self.facings == 'right':
+                if (bullet.x >= self.x) and (bullet.x < 950):
+                    bullet.x += bullet.vel
+                else:
+                    self.bullets.pop(self.bullets.index(bullet))
+            else:
+                if (bullet.x <= self.x) and (bullet.x > 0):
+                    bullet.x -= bullet.vel
+                else:
+                    self.bullets.pop(self.bullets.index(bullet))
+
+    def draw_bullet(self, win2):
+        for bullet in self.bullets:
+            bullet.draw(win2)
