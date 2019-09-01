@@ -52,6 +52,8 @@ class Player(object):
         self.is_dying = False
         self.is_dead = False
         self.revive = 1
+        self.name = ""
+        self.score = 0
 
     def draw(self, win2, x):
         if self.walk_count + 1 >= 24:
@@ -97,9 +99,10 @@ class Player(object):
             self.death_count = 0
             self.is_dying = False
             self.revive -= 1
+            self.score += 1
             if self.revive > 0:
                 self.is_dead = False
-                print('yo')
+
         win2.blit(dead[self.death_count // 3], (self.x - 20, self.y - 10))
         self.death_count += 1
 
